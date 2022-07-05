@@ -1,32 +1,23 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("tasks", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
+      description: {
         type: Sequelize.STRING,
-        unique: true,
       },
-      phone: {
-        type: Sequelize.INTEGER,
-      },
-      password: {
+      status: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      profilePicture: {
-        type: Sequelize.STRING,
-        defaultValue:
-          "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+        defaultValue: "Todo",
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +30,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("tasks");
   },
 };
