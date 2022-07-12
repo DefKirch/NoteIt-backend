@@ -16,7 +16,9 @@ router.get("/me", authMiddleware, async (req, res, next) => {
     console.log("ID", id);
     const userProjects = await User.findByPk(id, {
       include: [{ model: Project, include: [User] }],
+      // attributes: ["name", "profilePicture"],
     });
+    // Todo: remove some of the details of the other users and all passwords when sending back the information
     // delete userProjects.dataValues["password"];
     console.log(userProjects);
     res.status(200).send(userProjects);
@@ -48,19 +50,21 @@ router.post("/", authMiddleware, async (req, res, next) => {
     const data = toData(auth[1]);
     const id = data.userId;
     const { name, description } = req.body;
-    const newProject = await Project.create({
-      name,
-      description,
-    });
-    const newProjectId = newProject.dataValues.id;
-    const newUserProject = await UserProject.create({
-      userId: id,
-      projectId: newProjectId,
-    });
-    res.status(201).send(newProject);
-    // TODO: Create a new project with the right userID
-    // DO some checks, name may not be empty
-    // console.log("Name", name, "Desc", description);
+    if (name) {
+      const newProject = await Project.create({
+        name,
+        description,
+      });
+      const newProjectId = newProject.dataValues.id;
+      const newUserProject = await UserProject.create({
+        userId: id,
+        projectId: newProjectId,
+      });
+      const body = { newProject, newUserProject };
+      res.status(201).send(body);
+    } else {
+      res.status(400).send({ message: "Title is required." });
+    }
   } catch (e) {
     console.log(e.message);
     next(e);
