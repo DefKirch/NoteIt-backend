@@ -91,10 +91,22 @@ router.post("/task/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.patch("task/:id", authMiddleware, async (req, res, next) => {
+router.patch("/task/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log();
     const { title, description } = req.body;
+    const updatedTask = await Task.update(
+      {
+        title,
+        description,
+      },
+      {
+        where: { id: id },
+      }
+    );
+    // console.log(updatedTask);
+    res.status(200).send({ message: "task updated succesfully" });
   } catch (e) {
     console.log(e.message);
   }
