@@ -38,8 +38,7 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
     // delete projectResponse.dataValues["password"];
     res.status(200).send(projectResponse);
   } catch (e) {
-    console.log(e.message);
-    next(e);
+    res.status(400).send(e.message);
   }
 });
 
@@ -66,8 +65,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
       res.status(400).send({ message: "Title is required." });
     }
   } catch (e) {
-    console.log(e.message);
-    next(e);
+    res.status(400).send(e.message);
   }
 });
 
@@ -87,7 +85,7 @@ router.post("/task/:id", authMiddleware, async (req, res, next) => {
       res.status(400).send({ message: "Title and Status are required" });
     }
   } catch (e) {
-    console.log(e.message);
+    res.status(400).send(e.message);
   }
 });
 
@@ -108,7 +106,7 @@ router.patch("/task/:id", authMiddleware, async (req, res, next) => {
     // console.log(updatedTask);
     res.status(200).send({ message: "task updated succesfully" });
   } catch (e) {
-    console.log(e.message);
+    res.status(400).send(e.message);
   }
 });
 
