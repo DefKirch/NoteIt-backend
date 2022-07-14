@@ -71,4 +71,33 @@ router.post("/", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.post("/task/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status, title } = req.body;
+    if (title && status) {
+      const newTask = await Task.create({
+        title,
+        status,
+        projectId: id,
+      });
+      console.log(newTask);
+      res.status(201).send(newTask);
+    } else {
+      res.status(400).send({ message: "Title and Status are required" });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+});
+
+router.patch("task/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
+  } catch (e) {
+    console.log(e.message);
+  }
+});
+
 module.exports = router;

@@ -21,7 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, allowNull: false },
       phone: { type: DataTypes.INTEGER },
       password: { type: DataTypes.STRING, allowNull: false },
-      profilePicture: { type: DataTypes.STRING },
+      profilePicture: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
+      },
     },
     {
       sequelize,
