@@ -93,11 +93,12 @@ router.patch("/task/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log();
-    const { title, description } = req.body;
+    const { title, description, status } = req.body;
     const updatedTask = await Task.update(
       {
         title,
         description,
+        status,
       },
       {
         where: { id: id },
@@ -105,6 +106,16 @@ router.patch("/task/:id", authMiddleware, async (req, res, next) => {
     );
     // console.log(updatedTask);
     res.status(200).send({ message: "task updated succesfully" });
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+router.delete("/task/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedTask = await Task.destroy({ where: { id } });
+    res.status(200).send({ message: "Task deleted succesfully" });
   } catch (e) {
     res.status(400).send(e.message);
   }
