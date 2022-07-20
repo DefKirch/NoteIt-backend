@@ -111,4 +111,14 @@ router.patch("/task/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.delete("/task/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedTask = await Task.destroy({ where: { id } });
+    res.status(200).send({ message: "Task deleted succesfully" });
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 module.exports = router;
