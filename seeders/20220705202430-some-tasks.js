@@ -39,9 +39,8 @@ module.exports = {
           projectId: 1,
         },
         {
-          title: "Pet the DBeaver",
-          description:
-            "what? pet the dbeaver? but that's a databasemanager, right?",
+          title: "Setup database connection",
+          description: "Read the docs",
           status: "Todo",
           createdAt: new Date(),
           updatedAt: new Date(),
