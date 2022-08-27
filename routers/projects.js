@@ -23,8 +23,19 @@ router.get("/me", authMiddleware, async (req, res, next) => {
     console.log(userProjects);
     res.status(200).send(userProjects);
   } catch (e) {
-    console.log(e.message);
+    res.status(400).send(e.message);
     next(e);
+  }
+});
+
+router.get("/allUsers", authMiddleware, async (req, res, next) => {
+  try {
+    const allUsersWithId = await User.findAll({
+      attributes: ["id", "email"],
+    });
+    res.status(200).send(allUsersWithId);
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 
@@ -121,4 +132,28 @@ router.delete("/task/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.post("/newUserProject", authMiddleware, async (req, res, next) => {
+  try {
+    const { pId, uId } = req.body;
+    // console.log(pId, uId);
+    const userProjectExists = await UserProject.findAll({
+      where: {
+        userId: uId,
+        projectId: pId,
+      },
+    });
+    console.log(userProjectExists);
+    if (!userProjectExists) {
+      const newUserProject = await UserProject.create({
+        userId: uId,
+        projectId: pId,
+      });
+      res.status(200).send(userProjectExists);
+    } else {
+      res.status(400).send({ message: "User already member of this project" });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+});
 module.exports = router;
